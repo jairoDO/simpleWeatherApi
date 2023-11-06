@@ -1,0 +1,12 @@
+# Pipenv
+Pipfile
+Pipfile.lock
+
+# Virtual Environment
+__pycache__
+.venv
+venv
+env
+
+# SQLite database file
+*.sqlite3
