@@ -46,7 +46,5 @@ services:
       dockerfile: ./docker/Dockerfile
     env_file:
       - ./docker/.env
-    environment:
-      - COUNT=10
-    command: python ./weather_api/manage.py generate_db_entries --count $COUNT
+    command: python ./weather_api/manage.py generate_db_entries --count 20
 
