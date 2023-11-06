@@ -80,6 +80,11 @@ the project is designed to be Dockerized for easy deployment.
 
 - The project can be Dockerized for easy deployment using a Dockerfile and Docker Compose.
 
+### Prerequisites
+- Install docker an docker compose: https://docs.docker.com/compose/install/
+- You must create a .env file There is an under folder Docker/.env.
+
+
 ## Usage
 
 To run the project using Docker Compose:
