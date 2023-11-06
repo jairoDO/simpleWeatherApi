@@ -11,7 +11,7 @@ class WeatherViewsTestCase(TestCase):
         self.geocoder = Geocoder()
 
     def test_get_current_weather_with_positive_coordinates(self):
-        latitude, longitude = 12.34, 56.78
+        latitude, longitude = 48.8566, 2.3522
         url = reverse('get-current-weather', args=[latitude, longitude])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
