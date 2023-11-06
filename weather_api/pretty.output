@@ -1,0 +1,54 @@
+Feature: Testing Weather Command and View # weather/features/generate_db_entries.feature:1
+
+  Scenario: Generate and view Weather entries                                  # weather/features/generate_db_entries.feature:3
+    Given I get the current total count from WeatherTotalView                  # weather/features/steps/generate_db_entries_steps.py:10
+    When I run the Weather generation command with count 5                     # weather/features/steps/generate_db_entries_steps.py:17
+    And I make a GET request to the WeatherTotalView endpoint                  # weather/features/steps/generate_db_entries_steps.py:22
+    Then the new total count should be 5 greater than the previous total count # weather/features/steps/generate_db_entries_steps.py:27
+
+Feature: Weather API # weather/features/weather_api.feature:1
+
+  Background:   # weather/features/weather_api.feature:3
+
+  Scenario: Get current weather data by latitude and longitude                      # weather/features/weather_api.feature:6
+    Given the application is running                                                # weather/features/steps/weather_steps.py:19
+    When I send a GET request to "/weather/api/get_current_weather/61.999/66.3581/" # weather/features/steps/weather_steps.py:24
+    Then the response status code should be 200                                     # weather/features/steps/weather_steps.py:42
+    And the response should contain valid weather data                              # weather/features/steps/weather_steps.py:30
+
+  Scenario: Get current weather data with invalid latitude and longitude                            # weather/features/weather_api.feature:11
+    Given the application is running                                                                # weather/features/steps/weather_steps.py:19
+    When I send a GET request to "/weather/api/get_coordinates/invalid_latitude/invalid_longitude/" # weather/features/steps/weather_steps.py:24
+    Then the response status code should be 404                                                     # weather/features/steps/weather_steps.py:42
+
+  Scenario: Get coordinates by location name                            # weather/features/weather_api.feature:15
+    Given the application is running                                    # weather/features/steps/weather_steps.py:19
+    When I send a GET request to "/weather/api/get_coordinates/NewYork" # weather/features/steps/weather_steps.py:24
+    Then the response status code should be 200                         # weather/features/steps/weather_steps.py:42
+    And the response should contain coordinates for New York            # weather/features/steps/weather_steps.py:35
+
+  Scenario: Get coordinates by invalid location name                             # weather/features/weather_api.feature:20
+    Given the application is running                                             # weather/features/steps/weather_steps.py:19
+    When I send a GET request to "/weather/api/get_coordinates/InvalidLocation/" # weather/features/steps/weather_steps.py:24
+    Then the response status code should be 404                                  # weather/features/steps/weather_steps.py:42
+
+  Scenario: Get current weather data with latitude and longitude exceeding limits        # weather/features/weather_api.feature:24
+    Given the application is running                                                     # weather/features/steps/weather_steps.py:19
+    When I send a GET request to "/weather/api/get_current_weather/1000/2000/"           # weather/features/steps/weather_steps.py:24
+    Then the response status code should be 400                                          # weather/features/steps/weather_steps.py:42
+    And the response should contain an error message about latitude and longitude limits # weather/features/steps/weather_steps.py:59
+
+  Scenario: Retrieving current weather data with unknown latitude and longitude       # weather/features/weather_api.feature:29
+    Given the application is running                                                  # weather/features/steps/weather_steps.py:19
+    Given there are no weather records for latitude 18.1535858 and longitude -74.0060 # weather/features/steps/weather_steps.py:68
+    When I request current weather data for latitude 40.7128 and longitude -74.0060   # weather/features/steps/weather_steps.py:85
+    Then the response status code should be 400                                       # weather/features/steps/weather_steps.py:42
+
+  Scenario: Retrieving current weather data with known latitude and longitude     # weather/features/weather_api.feature:35
+    Given the application is running                                              # weather/features/steps/weather_steps.py:19
+    Given there are weather records for latitude 61.999 and longitude 66.3581     # weather/features/steps/weather_steps.py:73
+    And I wait for 2 seconds                                                      # weather/features/steps/weather_steps.py:105
+    And there are weather records for latitude 61.999 and longitude 66.3581       # weather/features/steps/weather_steps.py:73
+    When I request current weather data for latitude 61.999 and longitude 66.3581 # weather/features/steps/weather_steps.py:85
+    Then I should receive the most recent weather data based on data_timestamp    # weather/features/steps/weather_steps.py:93
+
