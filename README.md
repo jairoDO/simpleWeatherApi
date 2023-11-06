@@ -137,4 +137,4 @@ Make sure to customize the Docker Compose file and Dockerfile to match your proj
 
 - Remove the SECRET_KEY variable from settings.
 - Refactor views to use function-based views to simplify the code.
-
+- Add mock for testing when is using geopy calls

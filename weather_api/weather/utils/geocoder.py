@@ -7,7 +7,7 @@ from geopy.geocoders import Nominatim
 class Geocoder:
     def __init__(self):
         # Initialize the geolocator with a user agent
-        self.geolocator = Nominatim(user_agent=os.environ.get('SECRET_KEY', 'ABSTRACT_CHALLENGE'))
+        self.geolocator = Nominatim(user_agent=os.environ.get('SECRET_KEY', 'ABSTRACT_CHALLENGE_j'))
 
     @staticmethod
     def handle_exception(e):
